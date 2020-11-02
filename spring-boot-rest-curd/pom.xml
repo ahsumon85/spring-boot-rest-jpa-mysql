@@ -35,7 +35,6 @@
 			<scope>test</scope>
 
 			<!-- exclude junit 4 -->
-
 			<exclusions>
 				<exclusion>
 					<groupId>junit</groupId>
