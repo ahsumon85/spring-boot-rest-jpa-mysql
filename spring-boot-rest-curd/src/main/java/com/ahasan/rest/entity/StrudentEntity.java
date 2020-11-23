@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "employee")
-public class EmployeeEntity {
+public class StrudentEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ahasan.rest.dto.EmployeeDTO;
-import com.ahasan.rest.entity.EmployeeEntity;
+import com.ahasan.rest.entity.StrudentEntity;
 import com.ahasan.rest.repo.EmployeeRepo;
 
 @Service
@@ -24,12 +24,12 @@ public class EmployeeService {
 	}
 
 	public EmployeeDTO findByEmpId(Long empId) {
-		EmployeeEntity employeeEntity = employeeRepo.findByEmployeeId(empId);
+		StrudentEntity employeeEntity = employeeRepo.findByEmployeeId(empId);
 		return copyEmployeEntityToDto(employeeEntity);
 	}
 
 	public void createOrUpdateEmployee(EmployeeDTO employeeDTO) {
-		EmployeeEntity employeeEntity = copyEmployeDtoToEntity(employeeDTO);
+		StrudentEntity employeeEntity = copyEmployeDtoToEntity(employeeDTO);
 		employeeRepo.save(employeeEntity);
 	}
 
@@ -37,14 +37,14 @@ public class EmployeeService {
 		employeeRepo.deleteById(empId);
 	}
 
-	private EmployeeDTO copyEmployeEntityToDto(EmployeeEntity employeeEntity) {
+	private EmployeeDTO copyEmployeEntityToDto(StrudentEntity employeeEntity) {
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		BeanUtils.copyProperties(employeeEntity, employeeDTO);
 		return employeeDTO;
 	}
 
-	private EmployeeEntity copyEmployeDtoToEntity(EmployeeDTO employeeDTO) {
-		EmployeeEntity employeeEntity = new EmployeeEntity();
+	private StrudentEntity copyEmployeDtoToEntity(EmployeeDTO employeeDTO) {
+		StrudentEntity employeeEntity = new StrudentEntity();
 		BeanUtils.copyProperties(employeeDTO, employeeEntity);
 		return employeeEntity;
 	}
