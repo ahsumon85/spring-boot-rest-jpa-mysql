@@ -19,9 +19,6 @@ public class EmployeeEntity {
 	@Column(name = "emp_name")
 	private String employeeName;
 
-	@Column(name = "emp_email")
-	private String employeeEmail;
-
 	@Column(name = "emp_gender")
 	private String employeeGender;
 
@@ -44,14 +41,6 @@ public class EmployeeEntity {
 		this.employeeName = employeeName;
 	}
 
-	public String getEmployeeEmail() {
-		return employeeEmail;
-	}
-
-	public void setEmployeeEmail(String employeeEmail) {
-		this.employeeEmail = employeeEmail;
-	}
-
 	public String getEmployeeGender() {
 		return employeeGender;
 	}
@@ -68,10 +57,5 @@ public class EmployeeEntity {
 		this.employeePhone = employeePhone;
 	}
 
-	@Override
-	public String toString() {
-		return "EmployeeEntity [employeeId=" + employeeId + ", employeeName=" + employeeName + ", employeeEmail="
-				+ employeeEmail + ", employeeGender=" + employeeGender + ", employeePhone=" + employeePhone + "]";
-	}
 
 }

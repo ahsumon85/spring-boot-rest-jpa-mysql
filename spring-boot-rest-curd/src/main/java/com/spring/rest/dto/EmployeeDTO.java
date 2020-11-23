@@ -6,8 +6,6 @@ public class EmployeeDTO {
 
 	private String employeeName;
 
-	private String employeeEmail;
-
 	private String employeeGender;
 
 	private String employeePhone;
@@ -26,14 +24,6 @@ public class EmployeeDTO {
 
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
-	}
-
-	public String getEmployeeEmail() {
-		return employeeEmail;
-	}
-
-	public void setEmployeeEmail(String employeeEmail) {
-		this.employeeEmail = employeeEmail;
 	}
 
 	public String getEmployeeGender() {
