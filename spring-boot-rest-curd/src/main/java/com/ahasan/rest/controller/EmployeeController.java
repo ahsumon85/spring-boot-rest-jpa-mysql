@@ -26,19 +26,19 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeService employeeService;
 
-	@GetMapping(value = "/find", produces = "application/json")
+	@GetMapping(value = "/find")
 	public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-		List<EmployeeDTO> list = employeeService.findEmpList();
+		List<EmployeeDTO> list = employeeService.findEmployeeList();
 		return new ResponseEntity<List<EmployeeDTO>>(list, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/find/by-id", produces = "application/json")
+	@GetMapping(value = "/find/by-id")
 	public ResponseEntity<EmployeeDTO> getEmployeeById(@RequestParam Long id) {
-		EmployeeDTO list = employeeService.findByEmpId(id);
+		EmployeeDTO list = employeeService.findByEmployeeId(id);
 		return new ResponseEntity<EmployeeDTO>(list, HttpStatus.OK);
 	}
 
-	@PostMapping(value = { "/add", "/update" }, consumes = "application/json")
+	@PostMapping(value = { "/add", "/update" })
 	public ResponseEntity<String> createOrUpdateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
 		employeeService.createOrUpdateEmployee(employeeDTO);
 		return new ResponseEntity<>("Data Insert sucessfully", HttpStatus.OK);
@@ -46,7 +46,7 @@ public class EmployeeController {
 
 	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity<String> deleteEmployeeById(@PathVariable("id") Long id) {
-		employeeService.deleteEmployee(id);
+		employeeService.deleteEmployeeById(id);
 		return new ResponseEntity<>("Data Delete sucessfully", HttpStatus.OK);
 	}
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ahasan.rest.dto.EmployeeDTO;
-import com.ahasan.rest.entity.StrudentEntity;
+import com.ahasan.rest.entity.EmployeeEntity;
 import com.ahasan.rest.repo.EmployeeRepo;
 
 @Service
@@ -19,32 +19,32 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeRepo employeeRepo;
 
-	public List<EmployeeDTO> findEmpList() {
-		return employeeRepo.findAll().stream().map(this::copyEmployeEntityToDto).collect(Collectors.toList());
+	public List<EmployeeDTO> findEmployeeList() {
+		return employeeRepo.findAll().stream().map(this::copyEmployeeEntityToDto).collect(Collectors.toList());
 	}
 
-	public EmployeeDTO findByEmpId(Long empId) {
-		StrudentEntity employeeEntity = employeeRepo.findByEmployeeId(empId);
-		return copyEmployeEntityToDto(employeeEntity);
+	public EmployeeDTO findByEmployeeId(Long employeeId) {
+		EmployeeEntity employeeEntity = employeeRepo.findByEmployeeId(employeeId);
+		return copyEmployeeEntityToDto(employeeEntity);
 	}
 
 	public void createOrUpdateEmployee(EmployeeDTO employeeDTO) {
-		StrudentEntity employeeEntity = copyEmployeDtoToEntity(employeeDTO);
+		EmployeeEntity employeeEntity = copyEmployeeDtoToEntity(employeeDTO);
 		employeeRepo.save(employeeEntity);
 	}
 
-	public void deleteEmployee(Long empId) {
-		employeeRepo.deleteById(empId);
+	public void deleteEmployeeById(Long employeeId) {
+		employeeRepo.deleteById(employeeId);
 	}
 
-	private EmployeeDTO copyEmployeEntityToDto(StrudentEntity employeeEntity) {
+	private EmployeeDTO copyEmployeeEntityToDto(EmployeeEntity employeeEntity) {
 		EmployeeDTO employeeDTO = new EmployeeDTO();
 		BeanUtils.copyProperties(employeeEntity, employeeDTO);
 		return employeeDTO;
 	}
 
-	private StrudentEntity copyEmployeDtoToEntity(EmployeeDTO employeeDTO) {
-		StrudentEntity employeeEntity = new StrudentEntity();
+	private EmployeeEntity copyEmployeeDtoToEntity(EmployeeDTO employeeDTO) {
+		EmployeeEntity employeeEntity = new EmployeeEntity();
 		BeanUtils.copyProperties(employeeDTO, employeeEntity);
 		return employeeEntity;
 	}

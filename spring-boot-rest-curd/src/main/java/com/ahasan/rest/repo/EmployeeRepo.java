@@ -2,10 +2,10 @@ package com.ahasan.rest.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.ahasan.rest.entity.StrudentEntity;
+import com.ahasan.rest.entity.EmployeeEntity;
 
-public interface EmployeeRepo extends JpaRepository<StrudentEntity, Long> {
+public interface EmployeeRepo extends JpaRepository<EmployeeEntity, Long> {
 
-	public StrudentEntity findByEmployeeId(Long empId);
+	public EmployeeEntity findByEmployeeId(Long empId);
 
 }
