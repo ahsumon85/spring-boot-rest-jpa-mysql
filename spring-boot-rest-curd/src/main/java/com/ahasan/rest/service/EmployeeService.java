@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ahasan.rest.common.messages.BaseResponse;
+import com.ahasan.rest.common.messages.CustomMessage;
+import com.ahasan.rest.common.utils.Topic;
 import com.ahasan.rest.dto.EmployeeDTO;
 import com.ahasan.rest.entity.EmployeeEntity;
 import com.ahasan.rest.repo.EmployeeRepo;
@@ -28,9 +31,10 @@ public class EmployeeService {
 		return copyEmployeeEntityToDto(employeeEntity);
 	}
 
-	public void createOrUpdateEmployee(EmployeeDTO employeeDTO) {
+	public BaseResponse createOrUpdateEmployee(EmployeeDTO employeeDTO) {
 		EmployeeEntity employeeEntity = copyEmployeeDtoToEntity(employeeDTO);
 		employeeRepo.save(employeeEntity);
+		return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.SAVE_SUCCESS_MESSAGE);
 	}
 
 	public void deleteEmployeeById(Long employeeId) {

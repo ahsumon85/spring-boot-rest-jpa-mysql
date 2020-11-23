@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ahasan.rest.common.messages.BaseResponse;
 import com.ahasan.rest.dto.EmployeeDTO;
 import com.ahasan.rest.service.EmployeeService;
 
@@ -39,9 +40,9 @@ public class EmployeeController {
 	}
 
 	@PostMapping(value = { "/add", "/update" })
-	public ResponseEntity<String> createOrUpdateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
-		employeeService.createOrUpdateEmployee(employeeDTO);
-		return new ResponseEntity<>("Data Insert sucessfully", HttpStatus.OK);
+	public ResponseEntity<BaseResponse> createOrUpdateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+		BaseResponse baseResponse= employeeService.createOrUpdateEmployee(employeeDTO);
+		return new ResponseEntity<>(baseResponse, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
