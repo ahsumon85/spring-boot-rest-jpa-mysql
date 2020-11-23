@@ -1,8 +1,8 @@
-package com.spring.rest.repo;
+package com.ahasan.rest.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.spring.rest.entity.EmployeeEntity;
+import com.ahasan.rest.entity.EmployeeEntity;
 
 public interface EmployeeRepo extends JpaRepository<EmployeeEntity, Long> {
 

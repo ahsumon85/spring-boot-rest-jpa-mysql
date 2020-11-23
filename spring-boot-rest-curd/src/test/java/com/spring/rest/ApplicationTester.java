@@ -10,9 +10,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.spring.rest.controller.EmployeeController;
-import com.spring.rest.dto.EmployeeDTO;
-import com.spring.rest.service.EmployeeService;
+import com.ahasan.rest.controller.EmployeeController;
+import com.ahasan.rest.dto.EmployeeDTO;
+import com.ahasan.rest.service.EmployeeService;
 
 @ExtendWith(MockitoExtension.class)
 class ApplicationTester {

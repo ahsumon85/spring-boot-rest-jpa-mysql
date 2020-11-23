@@ -1,4 +1,4 @@
-package com.spring.rest.service;
+package com.ahasan.rest.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.rest.dto.EmployeeDTO;
-import com.spring.rest.entity.EmployeeEntity;
-import com.spring.rest.repo.EmployeeRepo;
+import com.ahasan.rest.dto.EmployeeDTO;
+import com.ahasan.rest.entity.EmployeeEntity;
+import com.ahasan.rest.repo.EmployeeRepo;
 
 @Service
 @Transactional

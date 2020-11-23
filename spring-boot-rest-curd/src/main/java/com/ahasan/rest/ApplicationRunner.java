@@ -1,4 +1,4 @@
-package com.spring.rest;
+package com.ahasan.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

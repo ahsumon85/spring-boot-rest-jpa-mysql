@@ -1,4 +1,4 @@
-package com.spring.rest.controller;
+package com.ahasan.rest.controller;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.rest.dto.EmployeeDTO;
-import com.spring.rest.service.EmployeeService;
+import com.ahasan.rest.dto.EmployeeDTO;
+import com.ahasan.rest.service.EmployeeService;
 
 @RestController
 @RequestMapping("/employee")

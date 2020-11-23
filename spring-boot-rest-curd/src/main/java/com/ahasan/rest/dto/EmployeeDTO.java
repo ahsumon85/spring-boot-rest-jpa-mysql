@@ -1,4 +1,4 @@
-package com.spring.rest.dto;
+package com.ahasan.rest.dto;
 
 public class EmployeeDTO {
 
