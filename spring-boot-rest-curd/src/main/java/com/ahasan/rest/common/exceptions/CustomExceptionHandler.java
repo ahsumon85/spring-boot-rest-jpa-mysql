@@ -52,7 +52,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(CustomDataIntegrityViolationException ex,
 			WebRequest request) {
 		String [] detail = ex.getLocalizedMessage().split("Detail: Key ");
-		ErrorResponse error = new ErrorResponse(CONFLICT, Arrays.asList(detail[1]));
+		ErrorResponse error = new ErrorResponse(CONFLICT, Arrays.asList(detail));
 		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 	}
 }

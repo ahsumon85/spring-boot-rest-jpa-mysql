@@ -5,9 +5,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ahasan.rest.common.exceptions.CustomDataIntegrityViolationException;
 import com.ahasan.rest.common.exceptions.RecordNotFoundException;
 import com.ahasan.rest.common.messages.BaseResponse;
 import com.ahasan.rest.common.messages.CustomMessage;
@@ -38,8 +40,12 @@ public class EmployeeService {
 	}
 
 	public BaseResponse createOrUpdateEmployee(EmployeeDTO employeeDTO) {
-		EmployeeEntity employeeEntity = copyEmployeeDtoToEntity(employeeDTO);
-		employeeRepo.save(employeeEntity);
+		try {
+			EmployeeEntity employeeEntity = copyEmployeeDtoToEntity(employeeDTO);
+			employeeRepo.save(employeeEntity);
+		}  catch (DataIntegrityViolationException ex) {
+			throw new CustomDataIntegrityViolationException(ex.getCause().getCause().getMessage());
+		}
 		return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.SAVE_SUCCESS_MESSAGE);
 	}
 

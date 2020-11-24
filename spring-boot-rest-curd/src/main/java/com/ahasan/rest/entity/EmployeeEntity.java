@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "employee")
@@ -16,13 +17,16 @@ public class EmployeeEntity {
 	@Column(name = "emp_id")
 	private Long employeeId;
 
+	@Size(max = 20, min = 1, message = "employee name must be equal or less than '{max}'")
 	@Column(name = "emp_name")
 	private String employeeName;
 
+	@Size(max = 6, min = 1, message = "employee gender must be equal or less than '{max}'")
 	@Column(name = "emp_gender")
 	private String employeeGender;
 
-	@Column(name = "emp_phone")
+	@Size(max = 14, min = 1, message = "employee phone must be equal or less than '{max}'")
+	@Column(name = "emp_phone", unique = true)
 	private String employeePhone;
 
 	public Long getEmployeeId() {
