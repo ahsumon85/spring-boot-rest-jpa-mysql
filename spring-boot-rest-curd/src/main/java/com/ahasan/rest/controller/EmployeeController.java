@@ -41,14 +41,14 @@ public class EmployeeController {
 
 	@PostMapping(value = { "/add", "/update" })
 	public ResponseEntity<BaseResponse> createOrUpdateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
-		BaseResponse baseResponse= employeeService.createOrUpdateEmployee(employeeDTO);
-		return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+		BaseResponse response = employeeService.createOrUpdateEmployee(employeeDTO);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<String> deleteEmployeeById(@PathVariable("id") Long id) {
-		employeeService.deleteEmployeeById(id);
-		return new ResponseEntity<>("Data Delete sucessfully", HttpStatus.OK);
+	public ResponseEntity<BaseResponse> deleteEmployeeById(@PathVariable("id") Long id) {
+		BaseResponse response = employeeService.deleteEmployeeById(id);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 }

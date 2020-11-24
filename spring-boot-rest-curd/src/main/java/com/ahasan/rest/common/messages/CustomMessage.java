@@ -10,7 +10,7 @@ public class CustomMessage {
 	public static final String DELETE_FAILED_MESSAGE = " could not be deleted successfully!";
 	
 	public static final String NO_RECOURD_FOUND = "No record found for given value: ";
-	public static final String DOESNOT_EXIT = "Does no exist for given value: ";
+	public static final String DOESNOT_EXIT = "Does not exist for given value: ";
 	
 
 	

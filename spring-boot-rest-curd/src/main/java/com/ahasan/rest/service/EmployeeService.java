@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ahasan.rest.common.exceptions.RecordNotFoundException;
 import com.ahasan.rest.common.messages.BaseResponse;
 import com.ahasan.rest.common.messages.CustomMessage;
 import com.ahasan.rest.common.utils.Topic;
@@ -27,8 +28,13 @@ public class EmployeeService {
 	}
 
 	public EmployeeDTO findByEmployeeId(Long employeeId) {
-		EmployeeEntity employeeEntity = employeeRepo.findByEmployeeId(employeeId);
-		return copyEmployeeEntityToDto(employeeEntity);
+		if (employeeRepo.existsById(employeeId)) {
+			EmployeeEntity employeeEntity = employeeRepo.findByEmployeeId(employeeId);
+			return copyEmployeeEntityToDto(employeeEntity);
+		}else {
+			throw new RecordNotFoundException(CustomMessage.DOESNOT_EXIT + employeeId);
+		}
+		
 	}
 
 	public BaseResponse createOrUpdateEmployee(EmployeeDTO employeeDTO) {
@@ -37,8 +43,14 @@ public class EmployeeService {
 		return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.SAVE_SUCCESS_MESSAGE);
 	}
 
-	public void deleteEmployeeById(Long employeeId) {
-		employeeRepo.deleteById(employeeId);
+	public BaseResponse deleteEmployeeById(Long employeeId) {
+		if (employeeRepo.existsById(employeeId)) {
+			employeeRepo.deleteById(employeeId);
+		} else {
+			throw new RecordNotFoundException(CustomMessage.NO_RECOURD_FOUND + employeeId);
+		}
+		return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.DELETE_SUCCESS_MESSAGE);
+		
 	}
 
 	private EmployeeDTO copyEmployeeEntityToDto(EmployeeEntity employeeEntity) {
