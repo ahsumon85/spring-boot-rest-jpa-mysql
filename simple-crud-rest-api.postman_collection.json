@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "66c3db0a-f75f-4a6f-8ad4-759c664b492a",
-		"name": "REST-API-CRUD",
+		"_postman_id": "77f0b56d-bb05-4956-91fe-3e3b20aa144e",
+		"name": "simple-crud-rest-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
