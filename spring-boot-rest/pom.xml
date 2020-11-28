@@ -15,7 +15,8 @@
 	<groupId>com.ahasan</groupId>
 	<artifactId>spring-boot-rest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
+	
 	<name>spring-boot-rest-curd</name>
 	<description>Demo project for Spring Boot</description>
 
