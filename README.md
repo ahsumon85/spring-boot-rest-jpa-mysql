@@ -2,7 +2,7 @@
 
 
 ## Overview
-* `***REST API***` :  is used to create API. We can define Request method to consume and produce object.
+`* ***REST API*** :`  is used to create API. We can define Request method to consume and produce object.
 
 ### tools you will need
 * Maven 3.0+ is your build tool
