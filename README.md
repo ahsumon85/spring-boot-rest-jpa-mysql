@@ -1,6 +1,13 @@
 # RESTful Web Service using spring-boot, JPA, MySQL, Hibernate Validator for exception handling
 
 
+## Overview
+
+### tools you will need
+* Maven 3.0+ is your build tool
+* Your favorite IDE but we will recommend `STS-4-4.4.1 version`. We use STS.
+* MySQL Server
+* JDK 1.8+
 
 ##  spring-boot-rest-data-jpa project run
 1. `git clone https://github.com/ahasanhabibsumon/spring-boot-rest-data-jpa.git`
