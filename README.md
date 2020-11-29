@@ -1,4 +1,4 @@
-# RESTful Web Service using spring-boot, JPA, MySQL, Hibernate Validator
+# RESTful Web Service using spring-boot, JPA, MySQL, Hibernate Validator for exception handling
 
 
 
