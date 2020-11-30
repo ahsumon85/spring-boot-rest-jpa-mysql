@@ -2,9 +2,9 @@
 
 
 ## Overview
-* `REST API:`  is used to create API. We can define Request method to consume and produce desire output.
-* `Spring Data JPA:`
-* `Mysql`
+* `REST API`:  is used to create API. We can define Request method to consume and produce desire output.
+* `Spring Data JPA`:
+* `Mysql`:
 * 
 ### tools you will need
 * Maven 3.0+ is your build tool
