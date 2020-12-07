@@ -5,12 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-
 @Entity
-@Table(name = "employee")
+@Table(name = "employee",
+		indexes = { @Index(columnList = "emp_phone", unique = true, name = "number")})
 public class EmployeeEntity {
 
 	@Id
@@ -27,7 +28,7 @@ public class EmployeeEntity {
 	private String employeeGender;
 
 	@Size(max = 14, min = 1, message = "employee phone must be equal or less than '{max}'")
-	@Column(name = "emp_phone", unique = true)
+	@Column(name = "emp_phone", nullable = false)
 	private String employeePhone;
 
 	public Long getEmployeeId() {
@@ -61,6 +62,5 @@ public class EmployeeEntity {
 	public void setEmployeePhone(String employeePhone) {
 		this.employeePhone = employeePhone;
 	}
-
 
 }
