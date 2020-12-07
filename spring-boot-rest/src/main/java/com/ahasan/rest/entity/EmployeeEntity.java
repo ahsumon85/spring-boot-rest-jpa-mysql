@@ -28,7 +28,7 @@ public class EmployeeEntity {
 	private String employeeGender;
 
 	@Size(max = 14, min = 1, message = "employee phone must be equal or less than '{max}'")
-	@Column(name = "emp_phone", nullable = false)
+	@Column(name = "emp_phone")
 	private String employeePhone;
 
 	public Long getEmployeeId() {
