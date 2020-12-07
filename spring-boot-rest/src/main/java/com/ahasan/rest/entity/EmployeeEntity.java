@@ -11,7 +11,8 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "employee",
-		indexes = { @Index(columnList = "emp_phone", unique = true, name = "number")})
+		indexes = {@Index(columnList = "emp_phone", unique = true, name = "number")}
+)
 public class EmployeeEntity {
 
 	@Id
