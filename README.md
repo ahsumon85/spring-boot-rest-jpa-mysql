@@ -1,11 +1,12 @@
-# RESTful Web Service using spring-boot, JPA, MySQL, Hibernate Validator for exception handling
+﻿# RESTful Web Service using spring-boot, JPA, MySQL, Hibernate Validator for exception handling
 
 
 ## Overview
 * `REST API`:  is used to create API. We can define Request method to consume and produce desire output.
-* `Spring Data JPA`:
-* `Mysql`:
-* 
+* `Spring Data JPA`: is a Java specification for managing relational data in Java applications. It allows us to access and persist data between Java object/ class and relational database.
+* `Mysql`: MySQL is a database management system.
+* `Hibernate-Validator`  it used to runtime exception handling 
+
 ### tools you will need
 * Maven 3.0+ is your build tool
 * Your favorite IDE but we will recommend `STS-4-4.4.1 version`. We use STS.
