@@ -1,4 +1,4 @@
-﻿## RESTful Web Service using spring-boot, JPA, MySQL and Hibernate Validator
+﻿RESTful Web Service using spring-boot, JPA, MySQL and Hibernate Validator
 
 
 ## Overview
@@ -15,8 +15,33 @@
 
 ## Maven Dependencies
 In this case, we'll learn how to validate domain objects in Spring Boot ***by building a basic REST controller***
-The controller will first take a domain object, then it will validate it with Hibernate Validator, and finally it will persist it into an MySql database.
+The controller will first take a domain object, then it will validate it with Hibernate Validator, and finally it will persist it into an `MySQL` database.
 The project's dependencies are fairly standard:
+
+```
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+```
+As shown above, we included `spring-boot-starter-web` in our `pom.xml` file because we'll need it for creating the REST controller. Additionally, let's make sure to check the latest versions of `spring-boot-starter-jpa` and the `mysql-connector-java` on Maven Central.
+And we also need to explicitly add the `hibernate-validator` dependency for enable validation.
 
 
 ##  spring-boot-rest-data-jpa project run
