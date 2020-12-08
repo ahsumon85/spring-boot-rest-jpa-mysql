@@ -7,7 +7,7 @@
 * `Mysql`: MySQL is a database management system.
 * `Hibernate-Validator`:  it used to runtime exception handling 
 
-### tools you will need
+### Tools you will need
 * Maven 3.0+ is your build tool
 * Your favorite IDE but we will recommend `STS-4-4.4.1 version`. We use STS.
 * MySQL Server
@@ -44,7 +44,8 @@ And we also need to explicitly add the `hibernate-validator` dependency for en
 
 Let’s add a few validations to the employee bean. Note that we are using `@Size, @Index` validations.
 
-**@Index Uniqueness**
+##### @Index Uniqueness
+
 The last optional parameter is a unique attribute, which defines whether the index is unique. A unique index ensures that the indexed fields don't store duplicate values. By default, it's false. If we want to change it, we can declare:
 
 ```
@@ -100,6 +101,32 @@ public class EmployeeEntity {
 	private String employeePhone;
 
 }
+```
+
+### Create Spring JPA Repository
+
+```
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.ahasan.rest.entity.EmployeeEntity;
+
+public interface EmployeeRepo extends JpaRepository<EmployeeEntity, Long> {
+	public EmployeeEntity findByEmployeeId(Long empId);
+}
+```
+
+Let's configure MySQL properties in an **application.properties**
+
+```
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/spring_rest?useSSL=false&createDatabaseIfNotExist=true
+spring.datasource.username=[username]
+spring.datasource.password=[password]
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.database-platform=org.hibernate.dialect.MySQL57Dialect
+spring.jpa.generate-ddl=true
+spring.jpa.show-sql=true
+server.port=8082
 ```
 
 
