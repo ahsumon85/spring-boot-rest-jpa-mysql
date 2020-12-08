@@ -40,6 +40,45 @@ The project's dependencies are fairly standard:
 As shown above, we included `spring-boot-starter-web` in our `pom.xml` file because we'll need it for creating the REST controller. Additionally, let's make sure to check the latest versions of `spring-boot-starter-jpa` and the `mysql-connector-java` on Maven Central.
 And we also need to explicitly add the `hibernate-validator` dependency for enable validation.
 
+### **A Simple Domain Class**
+
+```
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "employee",
+		indexes = {@Index(columnList = "emp_phone", unique = true, name = "number")}
+)
+public class EmployeeEntity {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "emp_id")
+	private Long employeeId;
+
+	@Size(max = 20, min = 1, message = "employee name must be equal or less than '{max}'")
+	@Column(name = "emp_name")
+	private String employeeName;
+
+	@Size(max = 6, min = 1, message = "employee gender must be equal or less than '{max}'")
+	@Column(name = "emp_gender")
+	private String employeeGender;
+
+	@Size(max = 14, min = 1, message = "employee phone must be equal or less than '{max}'")
+	@Column(name = "emp_phone")
+	private String employeePhone;
+
+}
+```
+
+
+
 
 ###  spring-boot-rest-data-jpa project run
 1. `git clone https://github.com/ahasanhabibsumon/spring-boot-rest-data-jpa.git`
