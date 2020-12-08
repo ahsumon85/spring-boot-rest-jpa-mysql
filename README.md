@@ -14,33 +14,58 @@
 * JDK 1.8+
 
 ### Maven Dependencies
-In this case, we'll learn how to validate domain objects in Spring Boot ***by building a basic REST controller***
+In this case, we'll learn how to validate domain objects in Spring Boot **by building a basic REST controller**
 The controller will first take a domain object, then it will validate it with Hibernate Validator, and finally it will persist it into an `MySQL` database.
 The project's dependencies are fairly standard:
 
 ```
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-		</dependency>
+<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<scope>runtime</scope>
+</dependency>
+<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+		<groupId>org.hibernate.validator</groupId>
+		<artifactId>hibernate-validator</artifactId>
+</dependency>
 ```
 As shown above, we included `spring-boot-starter-web` in our `pom.xml` file because we'll need it for creating the REST controller. Additionally, let's make sure to check the latest versions of `spring-boot-starter-jpa` and the `mysql-connector-java` on Maven Central.
 And we also need to explicitly add the `hibernate-validator` dependency for enable validation.
 
 ### **A Simple Domain Class**
+
+Let’s add a few validations to the employee bean. Note that we are using `@Size, @Index` validations.
+
+**@Index Uniqueness**
+The last optional parameter is a unique attribute, which defines whether the index is unique. A unique index ensures that the indexed fields don't store duplicate values. By default, it's false. If we want to change it, we can declare:
+
+```
+@Index(name = "uniqueIndex", columnList = "columnName", unique = true)
+```
+
+```
+[main] DEBUG org.hibernate.SQL -
+  alter table Student add constraint uniqueIndex unique (firstName)
+```
+
+
+
+When we create an index in that way, we add a uniqueness constraint on our columns, similarly, how as a unique attribute on `@Column` annotation do.` @Index` has an advantage over `@Column` due to the possibility to declare multi-column unique constraint:
+
+```
+@Index(name = "uniqueMulitIndex", columnList = "firstName, lastName", unique = true)
+```
+
+
+
 
 ```
 import javax.persistence.Column;
