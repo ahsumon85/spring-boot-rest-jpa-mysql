@@ -183,26 +183,6 @@ public class EmployeeController {
 }
 ```
 
-##### Exception(Error) Handling for RESTful Services
-
-Spring Boot provides a good default implementation for exception handling for RESTful Services.
-
-Let’s quickly look at the default Exception Handling features provided by Spring Boot.
-
-Resource Not Present Heres what happens when you fire a request to a resource not 
-
-found: `http://localhost:8082/employee/save`
-
-```
-{
-    "timestamp": "2020-12-01T06:33:14.020+0000",
-    "status": 404,
-    "error": "Not Found",
-    "message": "No message available",
-    "path": "/employee/save"
-}
-```
-
 ### Customizing Validation Response
 
 Let’s define a simple validation response bean.
@@ -261,8 +241,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	private String CONFLICT = "CONFLICT";
 
 	@ExceptionHandler(RecordNotFoundException.class)
-	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex,
-			WebRequest request) {
+	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex, WebRequest request) {
 		List<String> details = new ArrayList<>();
 		details.add(ex.getLocalizedMessage());
 		ErrorResponse error = new ErrorResponse(INCORRECT_REQUEST, details);
@@ -270,8 +249,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(MissingHeaderInfoException.class)
-	public final ResponseEntity<ErrorResponse> handleInvalidTraceIdException(MissingHeaderInfoException ex,
-			WebRequest request) {
+	public final ResponseEntity<ErrorResponse> handleInvalidTraceIdException(MissingHeaderInfoException ex, WebRequest request) {
 		List<String> details = new ArrayList<>();
 		details.add(ex.getLocalizedMessage());
 		ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
@@ -279,17 +257,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
-	public final ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex,
-			WebRequest request) {
-		List<String> details = ex.getConstraintViolations().parallelStream().map(e -> e.getMessage())
-				.collect(Collectors.toList());
+	public final ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+		List<String> details = ex.getConstraintViolations().parallelStream()
+					.map(e -> e.getMessage()).collect(Collectors.toList());
 		ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(CustomDataIntegrityViolationException.class)
-	public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(CustomDataIntegrityViolationException ex,
-			WebRequest request) {
+	public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(CustomDataIntegrityViolationException ex, WebRequest request) {
 		String[] detail = ex.getLocalizedMessage().split("Detail: Key ");
 		ErrorResponse error = new ErrorResponse(CONFLICT, Arrays.asList(detail));
 		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
@@ -297,7 +273,25 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 }
 ```
 
+##### Exception(Error) Handling for RESTful Services
 
+Spring Boot provides a good default implementation for exception handling for RESTful Services.
+
+Let’s quickly look at the default Exception Handling features provided by Spring Boot.
+
+Resource Not Present Heres what happens when you fire a request to a resource not 
+
+found: `http://localhost:8082/employee/save`
+
+```
+{
+    "timestamp": "2020-12-01T06:33:14.020+0000",
+    "status": 404,
+    "error": "Not Found",
+    "message": "No message available",
+    "path": "/employee/save"
+}
+```
 
 ###  spring-boot-rest-data-jpa project run
 

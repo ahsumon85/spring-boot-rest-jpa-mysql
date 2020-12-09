@@ -40,10 +40,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
-	public final ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex,
-			WebRequest request) {
-		List<String> details = ex.getConstraintViolations().parallelStream().map(e -> e.getMessage())
-				.collect(Collectors.toList());
+	public final ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+		List<String> details = ex.getConstraintViolations().parallelStream()
+					.map(e -> e.getMessage()).collect(Collectors.toList());
 		ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
