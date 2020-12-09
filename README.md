@@ -19,30 +19,30 @@ The controller will first take a domain object, then it will validate it with Hi
 The project's dependencies are fairly standard:
 
 ```
-<dependency>
+	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-web</artifactId>
-</dependency>
-<dependency>
+	</dependency>
+	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
 		<scope>runtime</scope>
-</dependency>
-<dependency>
+	</dependency>
+	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-data-jpa</artifactId>
-</dependency>
-<dependency>
+	</dependency>
+	<dependency>
 		<groupId>org.hibernate.validator</groupId>
 		<artifactId>hibernate-validator</artifactId>
-</dependency>
+	</dependency>
 ```
 As shown above, we included `spring-boot-starter-web` in our `pom.xml` file because we'll need it for creating the REST controller. Additionally, let's make sure to check the latest versions of `spring-boot-starter-jpa` and the `mysql-connector-java` on Maven Central.
 And we also need to explicitly add the `hibernate-validator` dependency for enable validation.
 
-### **A Simple Domain Class**
+### Simple Domain Class
 
-Let’s add a few validations to the employee bean. Note that we are using `@Size, @Index` validations.
+Let’s add a few validations to the employee bean. Note that we are using `@Size, @Index` validations. We are using `@Size` to specify the minimum length and also a message when a validation error occurs.
 
 ##### @Index Uniqueness
 
@@ -56,8 +56,6 @@ The last optional parameter is a unique attribute, which defines whether the ind
 [main] DEBUG org.hibernate.SQL -
   alter table Student add constraint uniqueIndex unique (firstName)
 ```
-
-
 
 When we create an index in that way, we add a uniqueness constraint on our columns, similarly, how as a unique attribute on `@Column` annotation do.` @Index` has an advantage over `@Column` due to the possibility to declare multi-column unique constraint:
 
@@ -127,6 +125,64 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL57Dialect
 spring.jpa.generate-ddl=true
 spring.jpa.show-sql=true
 server.port=8082
+```
+
+### Implementing a REST Controller
+
+We will build a simple REST controller for our example. Create a new package package `com.ahasan.rest.controller` and class `EmployeeController`
+
+```
+import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import com.ahasan.rest.common.messages.BaseResponse;
+import com.ahasan.rest.dto.EmployeeDTO;
+import com.ahasan.rest.service.EmployeeService;
+
+@Validated
+@RestController
+@RequestMapping("/employee")
+public class EmployeeController {
+
+	@Autowired
+	private EmployeeService employeeService;
+
+	@GetMapping(value = "/find")
+	public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
+		List<EmployeeDTO> list = employeeService.findEmployeeList();
+		return new ResponseEntity<List<EmployeeDTO>>(list, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/find/by-id")
+	public ResponseEntity<EmployeeDTO> getEmployeeById(@NotNull(message = "Id can't be null") @RequestParam Long id) {
+		EmployeeDTO list = employeeService.findByEmployeeId(id);
+		return new ResponseEntity<EmployeeDTO>(list, HttpStatus.OK);
+	}
+
+	@PostMapping(value = { "/add", "/update" })
+	public ResponseEntity<BaseResponse> createOrUpdateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+		BaseResponse response = employeeService.createOrUpdateEmployee(employeeDTO);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+
+	@DeleteMapping(value = "/delete/{id}")
+	public ResponseEntity<BaseResponse> deleteEmployeeById(@PathVariable("id") Long id) {
+		BaseResponse response = employeeService.deleteEmployeeById(id);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+}
 ```
 
 
