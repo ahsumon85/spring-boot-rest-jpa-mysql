@@ -214,7 +214,7 @@ public class ErrorResponse {
 }
 ```
 
-### Create GlobalExceptionHandler class
+### Create GlobalExceptionHandler.java class
 
 ```
 package com.ahasan.rest.common.exceptions;
@@ -275,9 +275,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 ##### Exception(Error) Handling for RESTful Services
 
-Spring Boot provides a good default implementation for exception handling for RESTful Services.
-
-Let’s quickly look at the default Exception Handling features provided by Spring Boot.
+**1.1** Spring Boot provides a good default implementation for exception handling for RESTful Services.Let’s quickly look at the default Exception Handling features provided by Spring Boot.
 
 Resource Not Present Heres what happens when you fire a request to a resource not 
 
@@ -293,7 +291,85 @@ found: `http://localhost:8082/employee/save`
 }
 ```
 
-![download](/home/ahasan/Desktop/download.jpeg)
+**1.2** if the `@Validated` is failed, it will trigger a `ConstraintViolationException`, we can override the error code like this :
+
+```
+@ExceptionHandler(ConstraintViolationException.class)
+public final ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+	List<String> details = ex.getConstraintViolations().parallelStream()
+					.map(e -> e.getMessage()).collect(Collectors.toList());
+	ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
+	return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+}
+```
+
+API Testing using `curl`
+
+```
+curl --location --request POST 'http://localhost:8082/employee/add' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "employeeName": "MD. ahasan habib sumon",
+    "employeeGender": "femalea",
+    "employeePhone": "2222"
+}'
+```
+
+```
+{
+    "message": "BAD_REQUEST",
+    "details": [
+        "employee name must be equal or less than '20'",
+        "employee gender must be equal or less than '6'"
+    ]
+}
+```
+
+**1.3** Record Not Found Validation 
+
+Apply `@Validated` on class level, and add the `javax.validation.constraints.*` annotations on path or params variables like this :
+
+```
+@ExceptionHandler(RecordNotFoundException.class)
+public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex, WebRequest request) {
+	List<String> details = new ArrayList<>();
+	details.add(ex.getLocalizedMessage());
+	ErrorResponse error = new ErrorResponse(INCORRECT_REQUEST, details);
+	return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+}
+```
+
+```
+package com.ahasan.rest.common.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class RecordNotFoundException extends RuntimeException
+{
+	private static final long serialVersionUID = 1L;
+
+	public RecordNotFoundException(String message) {
+        super(message);
+    }
+}
+```
+
+The default error message is good, just the error code 404 is not suitable.
+
+```
+curl --location --request GET 'http://localhost:8082/employee/find/by-id?id=12'
+
+{
+    "message": "INCORRECT_REQUEST",
+    "details": [
+        "Does not exist for given value: 12"
+    ]
+}
+```
+
+
 
 ###  spring-boot-rest-data-jpa project run
 

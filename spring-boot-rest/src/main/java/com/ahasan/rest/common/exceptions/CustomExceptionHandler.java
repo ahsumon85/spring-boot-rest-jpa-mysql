@@ -22,8 +22,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	private String CONFLICT = "CONFLICT";
 
 	@ExceptionHandler(RecordNotFoundException.class)
-	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex,
-			WebRequest request) {
+	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex, WebRequest request) {
 		List<String> details = new ArrayList<>();
 		details.add(ex.getLocalizedMessage());
 		ErrorResponse error = new ErrorResponse(INCORRECT_REQUEST, details);
@@ -31,8 +30,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(MissingHeaderInfoException.class)
-	public final ResponseEntity<ErrorResponse> handleInvalidTraceIdException(MissingHeaderInfoException ex,
-			WebRequest request) {
+	public final ResponseEntity<ErrorResponse> handleInvalidTraceIdException(MissingHeaderInfoException ex, WebRequest request) {
 		List<String> details = new ArrayList<>();
 		details.add(ex.getLocalizedMessage());
 		ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
@@ -48,8 +46,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(CustomDataIntegrityViolationException.class)
-	public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(CustomDataIntegrityViolationException ex,
-			WebRequest request) {
+	public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(CustomDataIntegrityViolationException ex, WebRequest request) {
 		String[] detail = ex.getLocalizedMessage().split("Detail: Key ");
 		ErrorResponse error = new ErrorResponse(CONFLICT, Arrays.asList(detail));
 		return new ResponseEntity<>(error, HttpStatus.CONFLICT);

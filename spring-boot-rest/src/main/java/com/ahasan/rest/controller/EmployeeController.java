@@ -22,7 +22,7 @@ import com.ahasan.rest.common.messages.BaseResponse;
 import com.ahasan.rest.dto.EmployeeDTO;
 import com.ahasan.rest.service.EmployeeService;
 
-//@Validated
+@Validated
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
