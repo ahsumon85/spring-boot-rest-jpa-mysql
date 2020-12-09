@@ -1,4 +1,4 @@
-﻿## RESTful Web Service using spring-boot, JPA, MySQL and Hibernate Validator
+﻿RESTful Web Service using spring-boot, JPA, MySQL and Hibernate Validator
 
 
 ### Overview
@@ -19,23 +19,23 @@ The controller will first take a domain object, then it will validate it with Hi
 The project's dependencies are fairly standard:
 
 ```
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-web</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>mysql</groupId>
-		<artifactId>mysql-connector-java</artifactId>
-		<scope>runtime</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-data-jpa</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>org.hibernate.validator</groupId>
-		<artifactId>hibernate-validator</artifactId>
-	</dependency>
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+	<groupId>mysql</groupId>
+	<artifactId>mysql-connector-java</artifactId>
+	<scope>runtime</scope>
+</dependency>
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+	<groupId>org.hibernate.validator</groupId>
+	<artifactId>hibernate-validator</artifactId>
+</dependency>
 ```
 As shown above, we included `spring-boot-starter-web` in our `pom.xml` file because we'll need it for creating the REST controller. Additionally, let's make sure to check the latest versions of `spring-boot-starter-jpa` and the `mysql-connector-java` on Maven Central.
 And we also need to explicitly add the `hibernate-validator` dependency for enable validation.
@@ -138,7 +138,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -151,7 +150,6 @@ import com.ahasan.rest.common.messages.BaseResponse;
 import com.ahasan.rest.dto.EmployeeDTO;
 import com.ahasan.rest.service.EmployeeService;
 
-@Validated
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -185,10 +183,124 @@ public class EmployeeController {
 }
 ```
 
+##### Exception(Error) Handling for RESTful Services
+
+Spring Boot provides a good default implementation for exception handling for RESTful Services.
+
+Let’s quickly look at the default Exception Handling features provided by Spring Boot.
+
+Resource Not Present Heres what happens when you fire a request to a resource not 
+
+found: `http://localhost:8082/employee/save`
+
+```
+{
+    "timestamp": "2020-12-01T06:33:14.020+0000",
+    "status": 404,
+    "error": "Not Found",
+    "message": "No message available",
+    "path": "/employee/save"
+}
+```
+
+### Customizing Validation Response
+
+Let’s define a simple validation response bean.
+
+```
+
+public class ErrorResponse {
+	public ErrorResponse(String message, List<String> details) {
+		super();
+		this.message = message;
+		this.details = details;
+	}
+	
+	private String message;
+	private List<String> details;
+
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public List<String> getDetails() {
+		return details;
+	}
+	public void setDetails(List<String> details) {
+		this.details = details;
+	}
+}
+```
+
+### Create GlobalExceptionHandler class
+
+```
+package com.ahasan.rest.common.exceptions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolationException;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+@ControllerAdvice
+public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+
+	private String INCORRECT_REQUEST = "INCORRECT_REQUEST";
+	private String BAD_REQUEST = "BAD_REQUEST";
+	private String CONFLICT = "CONFLICT";
+
+	@ExceptionHandler(RecordNotFoundException.class)
+	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex,
+			WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getLocalizedMessage());
+		ErrorResponse error = new ErrorResponse(INCORRECT_REQUEST, details);
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(MissingHeaderInfoException.class)
+	public final ResponseEntity<ErrorResponse> handleInvalidTraceIdException(MissingHeaderInfoException ex,
+			WebRequest request) {
+		List<String> details = new ArrayList<>();
+		details.add(ex.getLocalizedMessage());
+		ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	public final ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex,
+			WebRequest request) {
+		List<String> details = ex.getConstraintViolations().parallelStream().map(e -> e.getMessage())
+				.collect(Collectors.toList());
+		ErrorResponse error = new ErrorResponse(BAD_REQUEST, details);
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(CustomDataIntegrityViolationException.class)
+	public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(CustomDataIntegrityViolationException ex,
+			WebRequest request) {
+		String[] detail = ex.getLocalizedMessage().split("Detail: Key ");
+		ErrorResponse error = new ErrorResponse(CONFLICT, Arrays.asList(detail));
+		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+	}
+}
+```
 
 
 
 ###  spring-boot-rest-data-jpa project run
+
 1. `git clone https://github.com/ahasanhabibsumon/spring-boot-rest-data-jpa.git`
 2. `project import any IDE`
 3. `Go to application.properties and make sure databasename, username, password`

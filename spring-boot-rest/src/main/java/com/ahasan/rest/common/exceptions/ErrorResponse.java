@@ -3,6 +3,7 @@ package com.ahasan.rest.common.exceptions;
 import java.util.List;
 
 public class ErrorResponse {
+	
 	public ErrorResponse(String message, List<String> details) {
 		super();
 		this.message = message;
@@ -10,6 +11,7 @@ public class ErrorResponse {
 	}
 
 	private String message;
+	
 	private List<String> details;
 
 	public String getMessage() {

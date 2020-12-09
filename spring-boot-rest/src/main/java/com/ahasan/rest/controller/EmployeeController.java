@@ -22,7 +22,7 @@ import com.ahasan.rest.common.messages.BaseResponse;
 import com.ahasan.rest.dto.EmployeeDTO;
 import com.ahasan.rest.service.EmployeeService;
 
-@Validated
+//@Validated
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -43,7 +43,7 @@ public class EmployeeController {
 	}
 
 	@PostMapping(value = { "/add", "/update" })
-	public ResponseEntity<BaseResponse> createOrUpdateEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+	public ResponseEntity<BaseResponse> createOrUpdateEmployee( @RequestBody EmployeeDTO employeeDTO) {
 		BaseResponse response = employeeService.createOrUpdateEmployee(employeeDTO);
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
@@ -53,5 +53,4 @@ public class EmployeeController {
 		BaseResponse response = employeeService.deleteEmployeeById(id);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-
 }
