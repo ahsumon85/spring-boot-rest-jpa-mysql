@@ -150,6 +150,7 @@ import com.ahasan.rest.common.messages.BaseResponse;
 import com.ahasan.rest.dto.EmployeeDTO;
 import com.ahasan.rest.service.EmployeeService;
 
+@Validated
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -314,7 +315,7 @@ curl --location --request POST 'http://localhost:8082/employee/add' \
     "employeePhone": "2222"
 }'
 ```
-
+Output Message
 ```
 {
     "message": "BAD_REQUEST",
@@ -325,9 +326,9 @@ curl --location --request POST 'http://localhost:8082/employee/add' \
 }
 ```
 
-**1.3** Record Not Found Validation 
+**1.3**   **Record Not Found Validation Path Variables  and Request Param ** 
 
-Apply `@Validated` on class level, and add the `javax.validation.constraints.*` annotations on path or params variables like this :
+If given value not found from database then will show **RecordNotFoundException**  for  `Path Variables`  and `Request Param`:
 
 ```
 @ExceptionHandler(RecordNotFoundException.class)
@@ -341,15 +342,12 @@ public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNot
 
 ```
 package com.ahasan.rest.common.exceptions;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class RecordNotFoundException extends RuntimeException
-{
+public class RecordNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
-
 	public RecordNotFoundException(String message) {
         super(message);
     }
@@ -368,6 +366,40 @@ curl --location --request GET 'http://localhost:8082/employee/find/by-id?id=12'
     ]
 }
 ```
+
+**1.4  Request Param Validation**
+
+Apply `@Validated` on class level, and add the `javax.validation.constraints.*` annotations on `Request Param` like this :
+
+```
+import org.springframework.validation.annotation.Validated;
+
+@RestController
+@Validated // class level
+public class BookController {
+	@GetMapping(value = "/find/by-id")
+	public ResponseEntity<EmployeeDTO> getEmployeeById(
+						@NotNull(message = "Id can't be null") @RequestParam Long id) {
+		EmployeeDTO list = employeeService.findByEmployeeId(id);
+		return new ResponseEntity<EmployeeDTO>(list, HttpStatus.OK);
+	}
+}
+```
+
+The default error message, just the error code 400 is not suitable.
+
+```
+curl --location --request GET 'http://localhost:8082/employee/find/by-id?id='
+
+{
+    "message": "BAD_REQUEST",
+    "details": [
+        "Id can't be null"
+    ]
+}
+```
+
+
 
 
 

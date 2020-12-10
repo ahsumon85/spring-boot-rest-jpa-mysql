@@ -2,7 +2,6 @@ package com.ahasan.rest.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
