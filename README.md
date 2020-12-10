@@ -176,7 +176,7 @@ public class EmployeeController {
 }
 ```
 
-### Implementing a Application Service Class
+### Implementing a Service Class
 
 ```
 package com.ahasan.rest.service;
