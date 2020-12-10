@@ -57,14 +57,6 @@ The last optional parameter is a unique attribute, which defines whether the ind
   alter table Student add constraint uniqueIndex unique (firstName)
 ```
 
-When we create an index in that way, we add a uniqueness constraint on our columns, similarly, how as a unique attribute on `@Column` annotation do.` @Index` has an advantage over `@Column` due to the possibility to declare multi-column unique constraint:
-
-```
-@Index(name = "uniqueMulitIndex", columnList = "firstName, lastName", unique = true)
-```
-
-
-
 
 ```
 import javax.persistence.Column;
@@ -184,6 +176,85 @@ public class EmployeeController {
 }
 ```
 
+### Implementing a Application Service Class
+
+```
+package com.ahasan.rest.service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.ahasan.rest.common.exceptions.CustomDataIntegrityViolationException;
+import com.ahasan.rest.common.exceptions.RecordNotFoundException;
+import com.ahasan.rest.common.messages.BaseResponse;
+import com.ahasan.rest.common.messages.CustomMessage;
+import com.ahasan.rest.common.utils.Topic;
+import com.ahasan.rest.dto.EmployeeDTO;
+import com.ahasan.rest.entity.EmployeeEntity;
+import com.ahasan.rest.repo.EmployeeRepo;
+
+@Service
+@Transactional
+public class EmployeeService {
+
+	@Autowired
+	private EmployeeRepo employeeRepo;
+	
+	public List<EmployeeDTO> findEmployeeList() {
+		return employeeRepo.findAll().stream().map(this::copyEmployeeEntityToDto).collect(Collectors.toList());
+	}
+
+	public EmployeeDTO findByEmployeeId(Long employeeId) {
+		if (employeeRepo.existsById(employeeId)) {
+			EmployeeEntity employeeEntity = employeeRepo.findByEmployeeId(employeeId);
+			return copyEmployeeEntityToDto(employeeEntity);
+		}else {
+			throw new RecordNotFoundException(CustomMessage.DOESNOT_EXIT + employeeId);
+		}
+	}
+
+	public BaseResponse createOrUpdateEmployee(EmployeeDTO employeeDTO) {
+		try {
+			EmployeeEntity employeeEntity = copyEmployeeDtoToEntity(employeeDTO);
+			employeeRepo.save(employeeEntity);
+		}  catch (DataIntegrityViolationException ex) {
+			throw new CustomDataIntegrityViolationException(ex.getCause().getCause().getMessage());
+		}
+		return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.SAVE_SUCCESS_MESSAGE);
+	}
+
+	public BaseResponse deleteEmployeeById(Long employeeId) {
+		if (employeeRepo.existsById(employeeId)) {
+			employeeRepo.deleteById(employeeId);
+		} else {
+			throw new RecordNotFoundException(CustomMessage.NO_RECOURD_FOUND + employeeId);
+		}
+		return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.DELETE_SUCCESS_MESSAGE);
+	
+	}
+
+	private EmployeeDTO copyEmployeeEntityToDto(EmployeeEntity employeeEntity) {
+		EmployeeDTO employeeDTO = new EmployeeDTO();
+		BeanUtils.copyProperties(employeeEntity, employeeDTO);
+		return employeeDTO;
+	}
+
+	private EmployeeEntity copyEmployeeDtoToEntity(EmployeeDTO employeeDTO) {
+		EmployeeEntity employeeEntity = new EmployeeEntity();
+		BeanUtils.copyProperties(employeeDTO, employeeEntity);
+		return employeeEntity;
+	}
+
+}
+
+```
+
+
+
 ### Customizing Validation Response
 
 Let’s define a simple validation response bean.
@@ -274,7 +345,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 }
 ```
 
-##### Exception(Error) Handling for RESTful Services
+### Exception(Error) Handling for RESTful Services
 
 **1.1** Spring Boot provides a good default implementation for exception handling for RESTful Services.Let’s quickly look at the default Exception Handling features provided by Spring Boot.
 
@@ -326,12 +397,12 @@ Output Message
 }
 ```
 
-**1.3**   **Record Not Found Validation Path Variables  and Request Param ** 
+**1.3  Record Not Found Validation Path Variables  and Request Param ** 
 
 If given value not found from database then will show **RecordNotFoundException**  for  `Path Variables`  and `Request Param`:
 
 ```
-@ExceptionHandler(RecordNotFoundException.class)
+@ExceptionHandler(RecordNotFoundExcException(Error) Handling for RESTful Serviceseption.class)
 public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex, WebRequest request) {
 	List<String> details = new ArrayList<>();
 	details.add(ex.getLocalizedMessage());
