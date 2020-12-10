@@ -1,4 +1,4 @@
-﻿RESTful Web Service using spring-boot, JPA, MySQL and Hibernate Validator
+﻿##  RESTful Web Service using spring-boot, JPA, MySQL and Hibernate Validator
 
 
 ### Overview
@@ -253,8 +253,6 @@ public class EmployeeService {
 
 ```
 
-
-
 ### Customizing Validation Response
 
 Let’s define a simple validation response bean.
@@ -397,7 +395,79 @@ Output Message
 }
 ```
 
-**1.3  Record Not Found Validation Path Variables  and Request Param ** 
+**1.3 Unique Constraint Violation Exception**
+
+**@Index Uniqueness**
+
+`indexes = {@Index(columnList = "emp_phone", unique = true, name = "number")}`
+
+If table `column`uniqueness are violated , it will trigger a `dataIntegrityViolationException`, we can override the error code like this :
+
+```
+@ExceptionHandler(CustomDataIntegrityViolationException.class)
+public final ResponseEntity<ErrorResponse> dataIntegrityViolationException(
+						CustomDataIntegrityViolationException ex, WebRequest request) {
+	String[] detail = ex.getLocalizedMessage().split("Detail: Key ");
+	ErrorResponse error = new ErrorResponse(CONFLICT, Arrays.asList(detail));
+	return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+}
+```
+
+````
+package com.ahasan.rest.common.exceptions;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.CONFLICT)
+public class CustomDataIntegrityViolationException extends RuntimeException
+{
+	private static final long serialVersionUID = 1L;
+	public CustomDataIntegrityViolationException(String string) {
+        super(string);
+    }
+}
+````
+
+`createOrUpdateEmployee` method to used data insert or update. if data has not successfully save then in `catch` condition `CustomDataIntegrityViolationException` will be execute.
+
+```
+public BaseResponse createOrUpdateEmployee(EmployeeDTO employeeDTO) {
+	try {
+		EmployeeEntity employeeEntity = copyEmployeeDtoToEntity(employeeDTO);
+		employeeRepo.save(employeeEntity);
+	}  catch (DataIntegrityViolationException ex) {
+		throw new CustomDataIntegrityViolationException(ex.getCause().getCause().getMessage());
+	}
+	return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.SAVE_SUCCESS_MESSAGE);
+}
+```
+
+API Testing using **curl**
+
+```
+curl --location --request POST 'http://localhost:8082/employee/add' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "employeeName": "ahasan habib sumon",
+    "employeeGender": "female",
+    "employeePhone": "2222"
+}'
+```
+
+Output message. here **employee.number** the `employee` are table name and  `number` is unique constant name that is we already declared on the index `name = "number" `
+
+```
+{
+    "message": "CONFLICT",
+    "details": [
+        "Duplicate entry '2222' for key 'employee.number'"
+    ]
+}
+```
+
+
+
+**1.4 Record Not Found Validation Path Variables  and Request Param ** 
 
 If given value not found from database then will show **RecordNotFoundException**  for  `Path Variables`  and `Request Param`:
 
@@ -438,7 +508,7 @@ curl --location --request GET 'http://localhost:8082/employee/find/by-id?id=12'
 }
 ```
 
-**1.4  Request Param Validation**
+**1.5  Request Param Validation**
 
 Apply `@Validated` on class level, and add the `javax.validation.constraints.*` annotations on `Request Param` like this :
 
