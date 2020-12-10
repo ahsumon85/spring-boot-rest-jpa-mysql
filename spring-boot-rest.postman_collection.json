@@ -1,15 +1,22 @@
 {
 	"info": {
 		"_postman_id": "77f0b56d-bb05-4956-91fe-3e3b20aa144e",
-		"name": "simple-crud-rest-api",
+		"name": "spring-boot-rest",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "find-all",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
 					"raw": "http://localhost:8082/employee/find",
 					"protocol": "http",
@@ -62,7 +69,7 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "http://localhost:8082/employee/delete/2",
+					"raw": "http://localhost:8082/employee/delete/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -71,7 +78,7 @@
 					"path": [
 						"employee",
 						"delete",
-						"2"
+						"1"
 					]
 				}
 			},
@@ -89,7 +96,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n     \"employeeId\": 1,\n    \"employeeName\": \"ahasan habib\",\n    \"employeeGender\": \"female\",\n    \"employeePhone\": \"2222\"\n}"
+					"raw": "{\n    \"employeeId\": 29,\n    \"employeeName\": \"ahasan habib\",\n    \"employeeGender\": \"female\",\n    \"employeePhone\": \"01827942356\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8082/employee/update",
@@ -107,18 +114,19 @@
 			"response": []
 		},
 		{
-			"name": "Save",
+			"name": "save",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json"
+						"value": "application/json",
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \n    \"employeeName\":\"ahasan habib\",\n\n    \"employeeGender\":\"female\",\n\n\t\"employeePhone\":\"11111\"\n}"
+					"raw": "{\n    \"employeeName\": \"ahasan habib\",\n    \"employeeGender\": \"male\",\n    \"employeePhone\": \"018279423\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8082/employee/add",
