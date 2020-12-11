@@ -22,7 +22,7 @@ public class EmployeeService {
 
 	@Autowired
 	private EmployeeRepo employeeRepo;
-	
+
 	public List<EmployeeDTO> findEmployeeList() {
 		return employeeRepo.findAll().stream().map(this::copyEmployeeEntityToDto).collect(Collectors.toList());
 	}
@@ -31,7 +31,7 @@ public class EmployeeService {
 		if (employeeRepo.existsById(employeeId)) {
 			EmployeeEntity employeeEntity = employeeRepo.findByEmployeeId(employeeId);
 			return copyEmployeeEntityToDto(employeeEntity);
-		}else {
+		} else {
 			throw new RecordNotFoundException(CustomMessage.DOESNOT_EXIT + employeeId);
 		}
 	}
@@ -40,7 +40,7 @@ public class EmployeeService {
 		try {
 			EmployeeEntity employeeEntity = copyEmployeeDtoToEntity(employeeDTO);
 			employeeRepo.save(employeeEntity);
-		}  catch (DataIntegrityViolationException ex) {
+		} catch (DataIntegrityViolationException ex) {
 			throw new CustomDataIntegrityViolationException(ex.getCause().getCause().getMessage());
 		}
 		return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.SAVE_SUCCESS_MESSAGE);
@@ -53,7 +53,7 @@ public class EmployeeService {
 			throw new RecordNotFoundException(CustomMessage.NO_RECOURD_FOUND + employeeId);
 		}
 		return new BaseResponse(Topic.EMPLOYEE.getName() + CustomMessage.DELETE_SUCCESS_MESSAGE);
-	
+
 	}
 
 	private EmployeeDTO copyEmployeeEntityToDto(EmployeeEntity employeeEntity) {
