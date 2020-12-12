@@ -467,7 +467,7 @@ Output message. here **employee.number** the `employee` are table name and  `num
 
 
 
-**1.4 Record Not Found Validation Path Variables  and Request Param **
+**1.4 Record Not Found Validation Path Variables  and Request Param**
 
 If given value not found from database then will show **RecordNotFoundException**  for  `Path Variables`  and `Request Param`:
 
