@@ -7,7 +7,10 @@
 * `Mysql`: MySQL is a database management system.
 * `Hibernate-Validator`:  it used to runtime exception handling 
 
+`Follow the link to see Oauth2 in web service` [secure-spring-boot-web-service](https://github.com/habibsumoncse/spring-boot-secure-rest-jpa-mysql)
+
 ### Tools you will need
+
 * Maven 3.0+ is your build tool
 * Your favorite IDE but we will recommend `STS-4-4.4.1 version`. We use STS.
 * MySQL Server
@@ -442,7 +445,7 @@ public BaseResponse createOrUpdateEmployee(EmployeeDTO employeeDTO) {
 }
 ```
 
-API Testing using **curl**
+API Testing using **curl** for POST Method
 
 ```
 curl --location --request POST 'http://localhost:8082/employee/add' \
@@ -540,16 +543,38 @@ curl --location --request GET 'http://localhost:8082/employee/find/by-id?id='
 }
 ```
 
+### How to run spring-boot-rest service?
 
+1. `git clone https://github.com/habibsumoncse/spring-boot-rest-jpa-mysql`
+3. Go to `application.properties` and make sure databasename `username and password`
+5. open postman and import in postman `spring-boot-rest.postman_collection.json` file 
 
+### Build Project
 
+Now, you can create an executable JAR file, and run the Spring Boot application by using the Maven or Gradle commands shown below −
+For Maven, use the command as shown below −
 
-###  spring-boot-rest-data-jpa project run
+`mvn clean install`
+or
 
-1. `git clone https://github.com/ahasanhabibsumon/spring-boot-rest-data-jpa.git`
-2. `project import any IDE`
-3. `Go to application.properties and make sure databasename, username, password`
-4. `Run spring boot project`
-5. `open postman and import in postman REST-API-CRUD.postman_collection file `
+**Project import in sts4 IDE** 
+```File > import > maven > Existing maven project > Root Directory-Browse > Select project form root folder > Finish```
 
+### Run project 
 
+After “BUILD SUCCESSFUL”, you can find the JAR file under the build/libs directory.
+Now, run the JAR file by using the following command −
+
+ `java –jar <JARFILE> `
+
+ Run on sts IDE
+
+ `click right button on the project >Run As >Spring Boot App`
+
+After successfully run we can try `spring-boot-rest.postman_collection.json` imported API from postman with token
+
+### Spring Security Oauth2 in web service
+
+**Below we will see how to configure oauth2 in web service for API endpoint security.
+
+***To follow link***  [secure-spring-boot-web-service](https://github.com/habibsumoncse/spring-boot-secure-rest-jpa-mysql)
