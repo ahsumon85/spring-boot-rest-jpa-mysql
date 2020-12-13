@@ -575,6 +575,6 @@ After successfully run we can try `spring-boot-rest.postman_collection.json` imp
 
 ### Spring Security Oauth2 in web service
 
-**Below we will see how to configure oauth2 in web service for API endpoint security.
+**Below we will see how to configure oauth2 in web service for API endpoint security**
 
 ***To follow link***  [secure-spring-boot-web-service](https://github.com/habibsumoncse/spring-boot-secure-rest-jpa-mysql)
